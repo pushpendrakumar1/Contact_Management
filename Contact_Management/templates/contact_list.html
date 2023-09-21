@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0-beta/css/all.min.css">
+
+    <link rel="shortcut icon" href="favicon.ico">
+	<!-- FontAwesome JS-->
+	<script defer src="assets/fontawesome/js/all.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-primary text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Contact Manager</h2>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="{% url 'add_contact' %}" class="btn btn-light">Add Contact</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact_list' %}">Contact List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'add_contact' %}">Add User</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+ 
+   <div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Contact List</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Number</th>
+                        <th>Action</th> <!-- Add this column for the edit button -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in contacts %}
+                    <tr>
+                        <td>{{ contact.name }}</td>
+                        <td>{{ contact.email }}</td>
+                        <td>{{ contact.number }}</td>
+                        <td>
+                            <!-- Edit Button Trigger -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editContact{{ contact.id }}">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Edit Contact Modal -->
+                    <div class="modal fade" id="editContact{{ contact.id }}" tabindex="-1" aria-labelledby="editContactLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editContactLabel">Edit Contact</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Edit Contact Form -->
+                                    <form method="post" action="{% url 'contact_list' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="contact_id" value="{{ contact.id }}">
+                                        <div class="mb-3">
+                                            <label for="edit_name" class="form-label">Name:</label>
+                                            <input type="text" class="form-control" id="edit_name" name="name" value="{{ contact.name }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="edit_email" class="form-label">Email:</label>
+                                            <input type="email" class="form-control" id="edit_email" name="email" value="{{ contact.email }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="edit_number" class="form-label">Number:</label>
+                                            <input type="text" class="form-control" id="edit_number" name="number" value="{{ contact.number }}">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 fixed-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Contact Information</h4>
+                    <p>Pushpendra Kumar</p>
+                    <p>Email: <a href="mailto:pushpendrak@gmail.com" class="text-white" style="text-decoration: none;">pushpendrak@gmail.com</a></p>
+                    <p>Phone: 7078932543</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <h2>Connect With Me</h2>
+                    <ul class="social-list list-inline py-3 mx-auto">
+						<li class="list-inline-item" title="Linkedin"><a href="https://www.linkedin.com/in/pushpendra-kumar-8bb2581a1"
+								target="_blank"><i class="fab fa-linkedin-in fa-fw" title="Linkedin" style="color: #ff004f;"></i></a>
+						</li>
+						<li class="list-inline-item"  title="Github"><a href="https://github.com/pushpendrakumar1" target="_blank"><i
+									class="fab fa-github-alt fa-fw"  title="Github" style="color: #ff004f;"></i></a></li>
+						<li class="list-inline-item"  title="Instagram"><a href="https://instagram.com/varunk6854?igshid=NTE5MzUyOTU="
+								target="_blank"><i class="fab fa-instagram fa-fw" title="Instagram" style="color: #ff004f;"></i></a></li>
+						<li class="list-inline-item" title="Facebook"><a href="https://www.facebook.com/Varun-Kumar-113202831703016/"
+								target="_blank"><i class="fab fa-facebook fa-fw" title="Facebook" style="color: #ff004f;"></i></a></li>
+						<li class="list-inline-item" title="Portfolio"><a href="https://pushpendraportfolio.netlify.app/"
+								target="_blank"><i class="fab fa-codepen fa-fw" title="Portfolio" style="color: #ff004f;"></i></a></li>
+					</ul><!--//social-list-->
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
